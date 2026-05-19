@@ -24,6 +24,12 @@ namespace ALLmoco.Pages
         public string? ErrorMessage { get; set; } // string dentro da classe meal para criar a mensagem de erro no preenchimento de descricao
         // string? significa “essa variável pode ser nula”, necessário para esse caso que pode ou nao existir mensagem
         public string StreakMessage { get; set; } = ""; // classe string para a streak
+
+        /// <summary>
+        /// 
+        /// BLOCO DO METODO ONGET(), RESPONSAVEL POR TRAZER AS MENSAGENS DA STREAK 
+        /// 
+        /// </summary>
         public void OnGet()
         {
             // MealHistory = _context.MealChecks // pega a tabela
@@ -68,6 +74,13 @@ namespace ALLmoco.Pages
             }
         }
 
+
+        /// <summary>
+        /// 
+        /// BLOCO DE CÓDIGO RESPONSÁVEL PELAS MENSAGENS DE ERRO CASO NÃO MARQUEM AS CHECKBOX OU SE CASO TENTEM SALVAR SEM MARCAR-LAS.
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync() // Recebe os dados
         {
             if (!MealCheck.AteMeal && !MealCheck.DidNotEat) // atualizada a função, dando a opção apenas de marcar a checkbox correta
@@ -135,6 +148,14 @@ namespace ALLmoco.Pages
 
             }
 
+        /// <summary>
+        /// 
+        /// BLOCO RESPONSAVEL PELA CRIAÇÃO DOS CARDS DE HISTÓRICO 
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
         public async Task<IActionResult> OnPostDeleteAsync(int id) // método responsavel por criar o delete nos cards do histórico
         {
             var meal = await _context.MealChecks.FindAsync(id);
@@ -149,6 +170,13 @@ namespace ALLmoco.Pages
             return RedirectToPage();
         }
 
+        /// <summary>
+        /// 
+        /// BLOCO RESPONSAVEL PELA ACAO DO BOTÃO DE LIMPÉZA DO HISTORICO GERAL
+        /// 
+        /// </summary>
+        /// <returns></returns>
+
         public async Task<IActionResult> OnPostDeleteAllAsync() // botão de limpar o historico geral
         {
             _context.MealChecks.RemoveRange(_context.MealChecks);
@@ -157,6 +185,12 @@ namespace ALLmoco.Pages
 
             return RedirectToPage();
         }
+
+        /// <summary>
+        /// 
+        /// BLOCO DEDICADO PARA O FUNCIONAMENTO DA STREAK
+        /// 
+        /// </summary>
 
         private void CalculateStreak() // LINQ feito para criar uma contagem de Streak
         {

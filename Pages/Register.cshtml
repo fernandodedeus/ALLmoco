@@ -69,7 +69,7 @@
 
         </form>
 
-        @if (!string.IsNullOrEmpty(Model.ErrorMessage))
+        @if (!string.IsNullOrWhiteSpace(Model.ErrorMessage))
         {
             <div class="custom-alert mt-4">
                 @Model.ErrorMessage
@@ -80,6 +80,13 @@
         {
             <div class="custom-success-alert mt-4">
                 @Model.SuccessMessage
+            </div>
+        }
+
+        @if (ModelState.IsValid)
+        {
+            <div>
+                    @Model.ErrorMessage
             </div>
         }
 
