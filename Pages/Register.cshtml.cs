@@ -43,12 +43,19 @@ namespace ALLmoco.Pages
                 Password = Password
             };
 
+            if (!ModelState.IsValid)
+            {
+                ErrorMessage = "Preencha todos os campos corretamente.";
+                return Page();
+            }
+
             _context.Users.Add(user);
             _context.SaveChanges(); // aqui é onde o banco recebe os dados, salvando o registro do usuario
 
             SuccessMessage = "Usuário cadastrado com sucesso!";
 
             return Page();
+
         }
     }
 }

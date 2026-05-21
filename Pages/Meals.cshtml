@@ -22,6 +22,12 @@
                 @Model.StreakMessage
 
             </p> 
+                @if (Model.StreakAtRisk)
+            {
+                <div class="custom-alert mt-3">
+                    🚨 Poxa... vai deixar de comer mesmo hoje? Registre uma refeição e mantenha sua sequência!
+                </div>
+            }
             <!-- removida a mensagem padrao que existia aqui antes, pois após o 0.2, o streakmessage assumiu esse papel -->
         </div>
 

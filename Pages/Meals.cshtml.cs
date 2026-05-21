@@ -24,6 +24,14 @@ namespace ALLmoco.Pages
         public string? ErrorMessage { get; set; } // string dentro da classe meal para criar a mensagem de erro no preenchimento de descricao
         // string? significa “essa variável pode ser nula”, necessário para esse caso que pode ou nao existir mensagem
         public string StreakMessage { get; set; } = ""; // classe string para a streak
+
+        public bool StreakAtRisk { get; set; } // propriedade de risco de perder a streak
+
+        /// <summary>
+        /// 
+        /// BLOCO DO METODO ONGET(), RESPONSAVEL POR TRAZER AS MENSAGENS DA STREAK 
+        /// 
+        /// </summary>
         public void OnGet()
         {
             // MealHistory = _context.MealChecks // pega a tabela
@@ -68,6 +76,13 @@ namespace ALLmoco.Pages
             }
         }
 
+
+        /// <summary>
+        /// 
+        /// BLOCO DE CÓDIGO RESPONSÁVEL PELAS MENSAGENS DE ERRO CASO NÃO MARQUEM AS CHECKBOX OU SE CASO TENTEM SALVAR SEM MARCAR-LAS.
+        /// 
+        /// </summary>
+        /// <returns></returns>
         public async Task<IActionResult> OnPostAsync() // Recebe os dados
         {
             if (!MealCheck.AteMeal && !MealCheck.DidNotEat) // atualizada a função, dando a opção apenas de marcar a checkbox correta
@@ -135,6 +150,14 @@ namespace ALLmoco.Pages
 
             }
 
+        /// <summary>
+        /// 
+        /// BLOCO RESPONSAVEL PELA CRIAÇÃO DOS CARDS DE HISTÓRICO 
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+
         public async Task<IActionResult> OnPostDeleteAsync(int id) // método responsavel por criar o delete nos cards do histórico
         {
             var meal = await _context.MealChecks.FindAsync(id);
@@ -149,6 +172,13 @@ namespace ALLmoco.Pages
             return RedirectToPage();
         }
 
+        /// <summary>
+        /// 
+        /// BLOCO RESPONSAVEL PELA ACAO DO BOTÃO DE LIMPÉZA DO HISTORICO GERAL
+        /// 
+        /// </summary>
+        /// <returns></returns>
+
         public async Task<IActionResult> OnPostDeleteAllAsync() // botão de limpar o historico geral
         {
             _context.MealChecks.RemoveRange(_context.MealChecks);
@@ -157,6 +187,33 @@ namespace ALLmoco.Pages
 
             return RedirectToPage();
         }
+
+        /// <summary>
+        /// 
+        /// Calcula a streak atual do usuário com base nos dias que possuem
+        /// pelo menos 2 refeições registradas como realizadas.
+        ///
+        /// Regras da streak:
+        /// - Dias consecutivos contam normalmente.
+        /// - É permitido 1 dia de tolerância sem perder a sequência.
+        /// - Caso existam 2 ou mais dias consecutivos sem registros válidos,
+        ///   a streak é encerrada.
+        /// - Quando a streak entra em tolerância, a propriedade
+        ///   StreakAtRisk é ativada para exibir alertas visuais ao usuário.
+        ///
+        /// Funcionamento:
+        /// - As refeições são agrupadas por data.
+        /// - Apenas dias com 2 ou mais refeições realizadas são considerados.
+        /// - As datas são ordenadas da mais recente para a mais antiga.
+        /// - A diferença entre as datas é utilizada para determinar:
+        ///     0 = mesmo dia
+        ///     1 = dia consecutivo
+        ///     2 = tolerância de 1 dia
+        ///     3+ = quebra da streak
+        ///
+        /// O valor final é armazenado em CurrentStreak.
+        /// 
+        /// </summary>
 
         private void CalculateStreak() // LINQ feito para criar uma contagem de Streak
         {
@@ -175,24 +232,35 @@ namespace ALLmoco.Pages
 
             int streak = 0;
 
-            DateTime currentDate = DateTime.Today;
+            DateTime currentDate = DateTime.UtcNow.Date; // responsavel pela perca da Streak caso passe um dia sem marcar
+
 
             foreach (var date in dates)
             {
-                if (date == currentDate)
+                int difference = (currentDate - date).Days;
+
+                if (difference == 0) // quando o dia atual for igual a data
+                {
+                    streak++; // streak é incrementada (++)
+                    currentDate = date.AddDays(-1); // Currentdate é reduzido para manter o mesmo valor e ir pro proximo filtro
+                }
+                else if (difference == 1)
                 {
                     streak++;
-                    currentDate = currentDate.AddDays(-1);
+                    currentDate = date.AddDays(-1);
                 }
-                else if (date == currentDate.AddDays(-1))
+                else if (difference == 2)
                 {
                     streak++;
-                    currentDate = currentDate.AddDays(-1);
+                    StreakAtRisk = true;
+                    currentDate = date.AddDays(-1);
                 }
-                else
+                else if (difference >= 3)
                 {
                     break;
                 }
+
+               
             }
 
             CurrentStreak = streak;
