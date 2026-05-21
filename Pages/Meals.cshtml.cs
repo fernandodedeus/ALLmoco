@@ -225,9 +225,12 @@ namespace ALLmoco.Pages
                 .Where(x => x.AteMeal && x.UserId == userId) // pega so refeições feitas por usuário logado, para contar a streak apenas com as refeições do usuário logado
                 .ToList() // traz os dados primeiro
                 .GroupBy(x => x.Date.Date) // agrupa por dia
-                .Where(group => group.Count() >= 2) // filtra as refeições pra contar streak apenas com 2 refeições ou mais
-                .Select(group => group.Key) // pega apenas a data
-                .OrderByDescending(date => date)
+                .Select(group => new
+                {
+                    Date = group.Key,
+                    Count = group.Count()
+                }) 
+                .OrderByDescending(day => day.Date)
                 .ToList();
 
             int streak = 0;
@@ -235,31 +238,40 @@ namespace ALLmoco.Pages
             DateTime currentDate = DateTime.UtcNow.Date; // responsavel pela perca da Streak caso passe um dia sem marcar
 
 
-            foreach (var date in dates)
+            foreach (var day in dates)
             {
-                int difference = (currentDate - date).Days;
+                int difference = (currentDate - day.Date).Days;
 
-                if (difference == 0) // quando o dia atual for igual a data
-                {
-                    streak++; // streak é incrementada (++)
-                    currentDate = date.AddDays(-1); // Currentdate é reduzido para manter o mesmo valor e ir pro proximo filtro
-                }
-                else if (difference == 1)
-                {
-                    streak++;
-                    currentDate = date.AddDays(-1);
-                }
-                else if (difference == 2)
-                {
-                    streak++;
-                    StreakAtRisk = true;
-                    currentDate = date.AddDays(-1);
-                }
-                else if (difference >= 3)
+                // quebra total da sequencia
+                if (difference >= 3)
                 {
                     break;
                 }
 
+                // dia perfeito (2 ou mais refs)
+                if (day.Count >= 2)
+                {
+                    streak++;
+
+                    // se houve 1 dia de diferença, ativa o alerta
+                    if(difference == 2)
+                    {
+                        StreakAtRisk = true;
+                    }
+
+                    currentDate = day.Date.AddDays(-1);
+                }
+
+                // dia parcial
+                else if (day.Count == 1)
+                {
+                    streak++;
+
+                    // dia parcial ja coloca a streak em risco
+                    StreakAtRisk = true;
+
+                    currentDate = day.Date.AddDays(-1);
+                }
                
             }
 
