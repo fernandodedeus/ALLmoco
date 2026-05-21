@@ -255,12 +255,6 @@ namespace ALLmoco.Pages
                 {
                     streak++;
 
-                    // se houve 1 dia de diferença, ativa o alerta
-                    if(difference == 2)
-                    {
-                        StreakAtRisk = true;
-                    }
-
                     currentDate = day.Date.AddDays(-1);
                 }
 
