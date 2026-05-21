@@ -265,12 +265,14 @@ namespace ALLmoco.Pages
                 // dia parcial
                 else if (day.Count == 1)
                 {
-                    streak++;
+                    if (streak > 0)
+                    {
+                        // dia parcial ja coloca a streak em risco
+                        StreakAtRisk = true;
 
-                    // dia parcial ja coloca a streak em risco
-                    StreakAtRisk = true;
+                        currentDate = day.Date.AddDays(-1);
+                    }
 
-                    currentDate = day.Date.AddDays(-1);
                 }
                
             }
