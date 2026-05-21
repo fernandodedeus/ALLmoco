@@ -232,7 +232,7 @@ namespace ALLmoco.Pages
 
             int streak = 0;
 
-            DateTime currentDate = DateTime.Today; // responsavel pela perca da Streak caso passe um dia sem marcar
+            DateTime currentDate = DateTime.UtcNow.Date; // responsavel pela perca da Streak caso passe um dia sem marcar
 
 
             foreach (var date in dates)
@@ -259,6 +259,8 @@ namespace ALLmoco.Pages
                 {
                     break;
                 }
+
+               
             }
 
             CurrentStreak = streak;
