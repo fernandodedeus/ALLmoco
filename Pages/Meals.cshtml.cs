@@ -235,6 +235,8 @@ namespace ALLmoco.Pages
 
             int streak = 0;
 
+            StreakAtRisk = false;
+
             DateTime currentDate = DateTime.UtcNow.Date; // responsavel pela perca da Streak caso passe um dia sem marcar
 
 
