@@ -4,7 +4,8 @@ ALLmoço é uma aplicação web desenvolvida em ASP.NET Core Razor Pages com foc
 
 O projeto foi criado inicialmente como uma solução pessoal para ajudar no acompanhamento de refeições e construção de hábitos alimentares consistentes.
 
-É importante ressaltar que esse projeto foi inteiramente desenvolvido (v0.2) com auxílio e acompanhamento de uma AI.
+É importante ressaltar que esse projeto foi inteiramente desenvolvido (v0.2) com auxílio e acompanhamento de uma AI com foco no aprendizado e técnica prática em um
+projeto real e que resolvesse um problema.
 
 ---
 
@@ -13,9 +14,9 @@ O projeto foi criado inicialmente como uma solução pessoal para ajudar no acom
 - ASP.NET Core Razor Pages
 - C#
 - Entity Framework Core
-- SQLite
+- Postgres
 - Bootstrap
-- CSS Customizado
+- CSS
 - Git/GitHub
 - Railway
 
@@ -33,6 +34,8 @@ O projeto foi criado inicialmente como uma solução pessoal para ajudar no acom
 - Limpeza completa do histórico
 - Validação anti-duplicação
 - Dark Mode responsivo
+- Login e Cadastro
+- Tela multiusuário
 
 ---
 
@@ -44,8 +47,6 @@ O ALLmoço foi desenvolvido para transformar acompanhamento alimentar em algo si
 
 # 🛣️ Roadmap
 
-- [ ] Migração para PostgreSQL
-- [ ] Sistema de login
 - [ ] Notificações
 - [ ] PWA para celular
 - [ ] Dashboard com gráficos
@@ -60,7 +61,7 @@ Durante o desenvolvimento foram aplicados conceitos de:
 - Backend com ASP.NET Core
 - Entity Framework Core
 - LINQ
-- SQLite
+- Postgres Migrations
 - Deploy
 - Git e GitHub
 - Responsividade
