@@ -122,6 +122,7 @@ namespace ALLmoco.Pages
             // LINQ para verificar se já existe uma refeição do mesmo tipo feita hoje, para evitar que o usuário registre a mesma refeição mais de uma vez no mesmo dia
             bool alreadyExists = _context.MealChecks.Any(x =>
                 x.UserId == userId &&
+                x.MealType != "Personalizado" &&
                 x.MealType == MealCheck.MealType &&
                 x.Date >= today &&
                 x.Date < tomorrow &&
@@ -222,6 +223,7 @@ namespace ALLmoco.Pages
                 User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             var dates = _context.MealChecks
+                .Where(x => x.MealType != "Personalizado") // diz que x poderá fazer parte dos dados de mealtype se for diferente de personalizado
                 .Where(x => x.AteMeal && x.UserId == userId) // pega so refeições feitas por usuário logado, para contar a streak apenas com as refeições do usuário logado
                 .ToList() // traz os dados primeiro
                 .GroupBy(x => x.Date.Date) // agrupa por dia

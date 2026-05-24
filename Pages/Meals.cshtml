@@ -24,6 +24,7 @@
             </p> 
                 @if (Model.StreakAtRisk)
             {
+                <p>StreakAtRisk: @Model.StreakAtRisk</p>
                 <div class="custom-alert mt-3">
                     🚨 Poxa... vai deixar de comer mesmo hoje? Registre uma refeição e mantenha sua sequência!
                 </div>
@@ -69,6 +70,7 @@
                         <option>Almoço</option>
                         <option>Café da tarde</option>
                         <option>Janta</option>
+                        <option value="Personalizado">Personalizado</option>
 
                     </select>
 
