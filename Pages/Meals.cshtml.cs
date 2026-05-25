@@ -263,12 +263,10 @@ namespace ALLmoco.Pages
                 // dia parcial
                 else if (day.Count == 1)
                 {
-                    if (streak > 0)
+                    if (day.Date == DateTime.UtcNow.Date ||
+                        day.Date == DateTime.UtcNow.Date.AddDays(-1))
                     {
-                        // dia parcial ja coloca a streak em risco
                         StreakAtRisk = true;
-
-                        currentDate = day.Date.AddDays(-1);
                     }
 
                 }
