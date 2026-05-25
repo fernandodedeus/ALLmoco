@@ -60,15 +60,15 @@ namespace ALLmoco.Pages
             }
             else if (CurrentStreak >= 10 && CurrentStreak < 15)
             {
-                StreakMessage = "Você está criando um hábito incrível!";
+                StreakMessage = "CONTINUE ASSIM, VOCÊ É TÃO FORTE QUANTO PENSA!!";
             }
             else if (CurrentStreak >= 15 && CurrentStreak < 20)
             {
-                StreakMessage = "Seu corpo agradece cada refeição ❤️";
+                StreakMessage = "Oii rs, to gostando de ver os resultados da boa alimentação ❤️";
             }
             else if (CurrentStreak >= 20)
             {
-                StreakMessage = "Você virou exemplo de consistência 😭🔥";
+                StreakMessage = "Você virou exemplo de consistência 🔥";
             }
             else
             {
