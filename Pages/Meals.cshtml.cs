@@ -79,7 +79,7 @@ namespace ALLmoco.Pages
 
         /// <summary>
         /// 
-        /// BLOCO DE CÓDIGO RESPONSÁVEL PELAS MENSAGENS DE ERRO CASO NÃO MARQUEM AS CHECKBOX OU SE CASO TENTEM SALVAR SEM MARCAR-LAS.
+        /// BLOCO DE CÓDIGO RESPONSÁVEL PELAS MENSAGENS DE ERRO CASO NÃO MARQUEM A CHECKBOX.
         /// 
         /// </summary>
         /// <returns></returns>
@@ -88,19 +88,6 @@ namespace ALLmoco.Pages
             if (!MealCheck.AteMeal && !MealCheck.DidNotEat) // atualizada a função, dando a opção apenas de marcar a checkbox correta
             {
                 ErrorMessage = "Marque uma das opções antes de salvar.";
-
-                MealHistory = _context.MealChecks
-                    .OrderByDescending(x => x.Date)
-                    .ToList();
-
-                CalculateStreak();
-
-                return Page();
-            }
-
-            if (MealCheck.AteMeal && MealCheck.DidNotEat)
-            {
-                ErrorMessage = "Selecione apenas uma opção.";
 
                 MealHistory = _context.MealChecks
                     .OrderByDescending(x => x.Date)

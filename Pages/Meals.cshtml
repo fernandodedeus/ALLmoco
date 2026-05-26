@@ -100,6 +100,32 @@
 
                 </div>
 
+                <!-- SCRIPT RESPONSAVEL PELA MARCAÇÃO E DESMARCAÇÃO DAS CHECKBOX -->
+                <script>
+                    const ateMeal = document.getElementById("MealCheck_AteMeal");
+                    const didNotEat = document.getElementById("MealCheck_DidNotEat");
+
+                    ateMeal.addEventListener("change", function () {
+
+                        if (ateMeal.checked) {
+
+                            didNotEat.checked = false;
+
+                        }
+
+                    });
+
+                    didNotEat.addEventListener("change", function () {
+
+                        if (didNotEat.checked) {
+
+                            ateMeal.checked = false;
+
+                        }
+
+                    });
+                </script>
+
                 <div class="mb-4">
 
                     <label class="form-label custom-label">
