@@ -60,15 +60,15 @@ namespace ALLmoco.Pages
             }
             else if (CurrentStreak >= 10 && CurrentStreak < 15)
             {
-                StreakMessage = "Você está criando um hábito incrível!";
+                StreakMessage = "CONTINUE ASSIM, VOCÊ É TÃO FORTE QUANTO PENSA!!";
             }
             else if (CurrentStreak >= 15 && CurrentStreak < 20)
             {
-                StreakMessage = "Seu corpo agradece cada refeição ❤️";
+                StreakMessage = "Oii rs, to gostando de ver os resultados da boa alimentação ❤️";
             }
             else if (CurrentStreak >= 20)
             {
-                StreakMessage = "Você virou exemplo de consistência 😭🔥";
+                StreakMessage = "Você virou exemplo de consistência 🔥";
             }
             else
             {
@@ -79,7 +79,7 @@ namespace ALLmoco.Pages
 
         /// <summary>
         /// 
-        /// BLOCO DE CÓDIGO RESPONSÁVEL PELAS MENSAGENS DE ERRO CASO NÃO MARQUEM AS CHECKBOX OU SE CASO TENTEM SALVAR SEM MARCAR-LAS.
+        /// BLOCO DE CÓDIGO RESPONSÁVEL PELAS MENSAGENS DE ERRO CASO NÃO MARQUEM A CHECKBOX.
         /// 
         /// </summary>
         /// <returns></returns>
@@ -88,19 +88,6 @@ namespace ALLmoco.Pages
             if (!MealCheck.AteMeal && !MealCheck.DidNotEat) // atualizada a função, dando a opção apenas de marcar a checkbox correta
             {
                 ErrorMessage = "Marque uma das opções antes de salvar.";
-
-                MealHistory = _context.MealChecks
-                    .OrderByDescending(x => x.Date)
-                    .ToList();
-
-                CalculateStreak();
-
-                return Page();
-            }
-
-            if (MealCheck.AteMeal && MealCheck.DidNotEat)
-            {
-                ErrorMessage = "Selecione apenas uma opção.";
 
                 MealHistory = _context.MealChecks
                     .OrderByDescending(x => x.Date)
@@ -219,8 +206,7 @@ namespace ALLmoco.Pages
         private void CalculateStreak() // LINQ feito para criar uma contagem de Streak
         {
             // LINQ para calcular a streak, ele pega as refeições feitas, agrupa por dia, filtra os dias que tem 2 ou mais refeições feitas, ordena por data decrescente e depois conta quantos dias consecutivos tem a partir de hoje
-            var userId = int.Parse(
-                User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             var dates = _context.MealChecks
                 .Where(x => x.MealType != "Personalizado") // diz que x poderá fazer parte dos dados de mealtype se for diferente de personalizado
@@ -239,18 +225,12 @@ namespace ALLmoco.Pages
 
             StreakAtRisk = false;
 
-            DateTime currentDate = DateTime.UtcNow.Date; // responsavel pela perca da Streak caso passe um dia sem marcar
+            DateTime currentDate = DateTime.UtcNow.Date; // data atual
 
 
             foreach (var day in dates)
             {
                 int difference = (currentDate - day.Date).Days;
-
-                // quebra total da sequencia
-                if (difference >= 3)
-                {
-                    break;
-                }
 
                 // dia perfeito (2 ou mais refs)
                 if (day.Count >= 2)
@@ -263,12 +243,14 @@ namespace ALLmoco.Pages
                 // dia parcial
                 else if (day.Count == 1)
                 {
-                    if (streak > 0)
+                    if (day.Date == DateTime.UtcNow.Date ||
+                        day.Date == DateTime.UtcNow.Date.AddDays(-1))
                     {
-                        // dia parcial ja coloca a streak em risco
                         StreakAtRisk = true;
-
-                        currentDate = day.Date.AddDays(-1);
+                    }
+                else if (difference >= 3) // quebra total da sequencia 
+                { 
+                        break;
                     }
 
                 }
