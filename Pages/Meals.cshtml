@@ -24,7 +24,6 @@
             </p> 
                 @if (Model.StreakAtRisk)
             {
-                <p>StreakAtRisk: @Model.StreakAtRisk</p>
                 <div class="custom-alert mt-3">
                     🚨 Poxa... vai deixar de comer mesmo hoje? Registre uma refeição e mantenha sua sequência!
                 </div>
@@ -100,6 +99,32 @@
                     </label>
 
                 </div>
+
+                <!-- SCRIPT RESPONSAVEL PELA MARCAÇÃO E DESMARCAÇÃO DAS CHECKBOX -->
+                <script>
+                    const ateMeal = document.getElementById("MealCheck_AteMeal");
+                    const didNotEat = document.getElementById("MealCheck_DidNotEat");
+
+                    ateMeal.addEventListener("change", function () {
+
+                        if (ateMeal.checked) {
+
+                            didNotEat.checked = false;
+
+                        }
+
+                    });
+
+                    didNotEat.addEventListener("change", function () {
+
+                        if (didNotEat.checked) {
+
+                            ateMeal.checked = false;
+
+                        }
+
+                    });
+                </script>
 
                 <div class="mb-4">
 
