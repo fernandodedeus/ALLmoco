@@ -206,8 +206,7 @@ namespace ALLmoco.Pages
         private void CalculateStreak() // LINQ feito para criar uma contagem de Streak
         {
             // LINQ para calcular a streak, ele pega as refeições feitas, agrupa por dia, filtra os dias que tem 2 ou mais refeições feitas, ordena por data decrescente e depois conta quantos dias consecutivos tem a partir de hoje
-            var userId = int.Parse(
-                User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)!.Value);
 
             var dates = _context.MealChecks
                 .Where(x => x.MealType != "Personalizado") // diz que x poderá fazer parte dos dados de mealtype se for diferente de personalizado
@@ -226,21 +225,20 @@ namespace ALLmoco.Pages
 
             StreakAtRisk = false;
 
-            DateTime currentDate = DateTime.UtcNow.Date; // responsavel pela perca da Streak caso passe um dia sem marcar
+            DateTime currentDate = DateTime.UtcNow.Date; // data atual
 
 
             foreach (var day in dates)
             {
                 int difference = (currentDate - day.Date).Days;
 
-                // quebra total da sequencia
-                if (difference >= 3)
+                if (difference >= 2) // quebra total da sequencia 
                 {
                     break;
                 }
 
                 // dia perfeito (2 ou mais refs)
-                if (day.Count >= 2)
+                else if (day.Count >= 2)
                 {
                     streak++;
 
@@ -248,12 +246,23 @@ namespace ALLmoco.Pages
                 }
 
                 // dia parcial
-                else if (day.Count == 1)
-                {
-                    if (day.Date == DateTime.UtcNow.Date ||
-                        day.Date == DateTime.UtcNow.Date.AddDays(-1))
+                else if (day.Count == 1) {
                     {
-                        StreakAtRisk = true;
+                        currentDate = day.Date.AddDays(-1);
+
+                    }
+
+                    /// 
+
+                    var primeiroRegistro = dates.FirstOrDefault();
+
+                    if (primeiroRegistro == null || primeiroRegistro.Date != DateTime.UtcNow.Date)
+                    {
+
+                        if (streak > 0)
+                        {
+                            StreakAtRisk = true;
+                        }
                     }
 
                 }
