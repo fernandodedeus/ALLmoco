@@ -232,14 +232,12 @@ namespace ALLmoco.Pages
             {
                 int difference = (currentDate - day.Date).Days;
 
-<<<<<<< HEAD
-=======
-                if (difference >= 2) // quebra total da sequencia 
+               if (difference >= 2) // quebra total da sequencia 
                 {
                     break;
                 }
 
->>>>>>> dev
+
                 // dia perfeito (2 ou mais refs)
                 else if (day.Count >= 2)
                 {

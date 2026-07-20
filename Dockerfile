@@ -10,7 +10,7 @@ RUN dotnet restore
 COPY . .
 
 # Publica a aplicação
-RUN dotnet publish -c Release -o /app/publish --no-restore
+RUN dotnet publish ALLmoco.csproj -c Release -o /app/publish --no-restore
 
 # Etapa final
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
