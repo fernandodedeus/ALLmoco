@@ -232,8 +232,13 @@ namespace ALLmoco.Pages
             {
                 int difference = (currentDate - day.Date).Days;
 
+                if (difference >= 2) // quebra total da sequencia 
+                {
+                    break;
+                }
+
                 // dia perfeito (2 ou mais refs)
-                if (day.Count >= 2)
+                else if (day.Count >= 2)
                 {
                     streak++;
 
@@ -241,16 +246,23 @@ namespace ALLmoco.Pages
                 }
 
                 // dia parcial
-                else if (day.Count == 1)
-                {
-                    if (day.Date == DateTime.UtcNow.Date ||
-                        day.Date == DateTime.UtcNow.Date.AddDays(-1))
+                else if (day.Count == 1) {
                     {
-                        StreakAtRisk = true;
+                        currentDate = day.Date.AddDays(-1);
+
                     }
-                else if (difference >= 3) // quebra total da sequencia 
-                { 
-                        break;
+
+                    /// 
+
+                    var primeiroRegistro = dates.FirstOrDefault();
+
+                    if (primeiroRegistro == null || primeiroRegistro.Date != DateTime.UtcNow.Date)
+                    {
+
+                        if (streak > 0)
+                        {
+                            StreakAtRisk = true;
+                        }
                     }
 
                 }
